@@ -43,6 +43,8 @@ class AlignedDataset(BaseDataset):
         else:
             transform_A = get_transform(self.opt, params, method=Image.NEAREST, normalize=False)
             A_tensor = transform_A(A) * 255.0
+        if A_tensor.size(0) > self.opt.input_nc:
+            A_tensor = A_tensor[:self.opt.input_nc, ...]
 
         B_tensor = inst_tensor = feat_tensor = 0
         ### input B (real images)
