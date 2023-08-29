@@ -73,15 +73,16 @@ if __name__ == '__main__':
             ############## Forward Pass ######################
             # losses, generated = model(Variable(data['label']), Variable(data['inst']),
             #     Variable(data['image']), Variable(data['feat']), infer=save_fake)
-            losses, generated = model(data['label'], data['image'], data['condition'])
+            loss_dict, generated = model(data['label'], data['image'], data['condition'])
 
-            # sum per device losses
-            losses = [ torch.mean(x) if not isinstance(x, int) else x for x in losses ]
-            loss_dict = dict(zip(model.module.loss_names, losses))
+            # # sum per device losses
+            # losses = [ torch.mean(x) if not isinstance(x, int) else x for x in losses ]
+            # loss_dict = dict(zip(model.module.loss_names, losses))
 
             # calculate final loss scalar
-            loss_D = (loss_dict['D_fake'] + loss_dict['D_real']) * 0.5
-            loss_G = loss_dict['G_GAN'] + loss_dict.get('G_GAN_Feat',0) + loss_dict.get('G_VGG',0)
+            loss_D = (loss_dict['D_fake'] + loss_dict['D_real']) * 0.5 + loss_dict.get('cond_real', 0)
+            loss_G = loss_dict['G_GAN'] + loss_dict.get('G_GAN_Feat',0) + loss_dict.get('G_VGG',0) + \
+                     loss_dict.get('L1', 0) + loss_dict.get('cond_fake', 0)
 
             ############### Backward Pass ####################
             # update generator weights

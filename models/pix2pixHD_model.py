@@ -12,7 +12,7 @@ class Pix2PixHDModel(BaseModel):
         return 'Pix2PixHDModel'
 
     def init_loss_filter(self, use_gan_feat_loss, use_vgg_loss):
-        flags = (True, use_gan_feat_loss, use_vgg_loss, True, True)
+        flags = (True, use_gan_feat_loss, use_vgg_loss, True, True, True)
 
         def loss_filter(g_gan, g_gan_feat, g_vgg, d_real, d_fake):
             return [l for (l, f) in zip((g_gan, g_gan_feat, g_vgg, d_real, d_fake), flags) if f]
@@ -80,9 +80,6 @@ class Pix2PixHDModel(BaseModel):
                 self.criterionAttribute = self.criterionFeat
             if not opt.no_vgg_loss:
                 self.criterionVGG = networks.VGGLoss(self.gpu_ids)
-
-            # Names so we can breakout loss
-            self.loss_names = self.loss_filter('G_GAN', 'G_GAN_Feat', 'G_VGG', 'D_real', 'D_fake')
 
             # initialize optimizers
             # optimizer G

@@ -48,4 +48,7 @@ class ESGAN(Pix2PixHDModel):
                                        self.criterionFeat(pred_fake[i][j],
                                                           pred_real[i][j].detach()) * self.opt.lambda_feat
 
-        return [loss_l1, loss_D_fake, loss_D_real, loss_G_GAN, loss_regress_real, loss_regress_fake], fake_image
+        loss_dict = {'L1': loss_l1, 'D_fake': loss_D_fake, 'D_real': loss_D_real, 'G_GAN': loss_G_GAN,
+                     'cond_real': loss_regress_real, 'cond_fake': loss_regress_fake}
+        return loss_dict, fake_image
+    
