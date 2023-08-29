@@ -44,7 +44,7 @@ class AlignedDataset(BaseDataset):
             transform_A = get_transform(self.opt, params, method=Image.NEAREST, normalize=False)
             A_tensor = transform_A(A) * 255.0
         if A_tensor.size(0) > self.opt.input_nc:
-            A_tensor = A_tensor[:self.opt.input_nc, ...]
+            A_tensor = A_tensor[:self.opt.input_nc]
 
         B_tensor = inst_tensor = feat_tensor = 0
         ### input B (real images)
@@ -53,6 +53,8 @@ class AlignedDataset(BaseDataset):
             B = Image.open(B_path).convert('RGB')
             transform_B = get_transform(self.opt, params)      
             B_tensor = transform_B(B)
+            if B_tensor.size(0) > self.opt.output_nc:
+                B_tensor = B_tensor[:self.opt.output_nc]
 
         ### if using instance maps        
         if not self.opt.no_instance:
