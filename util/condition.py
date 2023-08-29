@@ -16,8 +16,8 @@ class Condition:
             self.condition_mean = np.array(condition_norm['mean'])
             self.condition_stdvar = np.array(condition_norm['stdvar'])
         except:
-            self.condition_mean = np.array([0] * self.condition_size)
-            self.condition_stdvar = np.array([1] * self.condition_size)
+            self.condition_mean = np.array([0] * 5)
+            self.condition_stdvar = np.array([1] * 5)
         self.condition_mean = self.condition_mean[self.condition_order]
         self.condition_stdvar = self.condition_stdvar[self.condition_order]
 
