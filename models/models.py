@@ -1,4 +1,5 @@
 import torch
+import models
 
 def create_model(opt):
     if opt.model == 'pix2pixHD':
@@ -8,8 +9,9 @@ def create_model(opt):
         else:
             model = InferenceModel()
     else:
-    	from .ui_model import UIModel
-    	model = UIModel()
+        from models import ESGAN
+        model_class = eval(opt.model)
+        model = model_class()
     model.initialize(opt)
     if opt.verbose:
         print("model [%s] was created" % (model.name()))

@@ -30,12 +30,20 @@ class BaseOptions():
         self.parser.add_argument('--output_nc', type=int, default=3, help='# of output image channels')
 
         # for setting inputs
-        self.parser.add_argument('--dataroot', type=str, default='./datasets/cityscapes/') 
+        self.parser.add_argument('--dataroot', type=str, default='./datasets/cityscapes/')
+        self.parser.add_argument('--dataset_name', type=str, default='Aligned', help='to switch different Dataset loading class')
+        self.parser.add_argument('--folders_image', type=str, default='./datasets/cityscapes/')
+        self.parser.add_argument('--folders_label', type=str, default='./datasets/cityscapes/')
         self.parser.add_argument('--resize_or_crop', type=str, default='scale_width', help='scaling and cropping of images at load time [resize_and_crop|crop|scale_width|scale_width_and_crop]')
         self.parser.add_argument('--serial_batches', action='store_true', help='if true, takes images in order to make batches, otherwise takes them randomly')        
         self.parser.add_argument('--no_flip', action='store_true', help='if specified, do not flip the images for data argumentation') 
         self.parser.add_argument('--nThreads', default=2, type=int, help='# threads for loading data')                
         self.parser.add_argument('--max_dataset_size', type=int, default=float("inf"), help='Maximum number of samples allowed per dataset. If the dataset directory contains more than max_dataset_size, only a subset is loaded.')
+        self.parser.add_argument('--condition_size', type=int, default=5, help='# of condition')
+        self.parser.add_argument('--condition_norm', type=str, default='./config/mean&stdvar.json',
+                                 help='json file that contains default mean and stdvar value of condition vector')
+        self.parser.add_argument('--condition_order', type=str, default='sfdnv',
+                                 help='default order is volume, number of building, density, average floor and field size')
 
         # for displays
         self.parser.add_argument('--display_winsize', type=int, default=512,  help='display window size')
